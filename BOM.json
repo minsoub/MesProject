@@ -1,0 +1,110 @@
+database BOM
+collection
+
+multiple documents insert : but it's weird that it does not support comma between documents
+Importing JSON data into MongoDB can be tricky. By default, monogoimport assumes a special structure for a file to import from: 
+similar to JSON format except that only one document per line is allowed with no comma after each of them 
+λ mongoimport --db <db-name> --collection <coll-name> --type json --file seed.json --jsonArray
+
+"master":[
+	{
+		"name":"구입 품목",
+		"l_id":"B1",
+		"state" : "expanded",
+		"sub":[
+			{"m_id":"B100",	"name":"coil1",	"quantity":"EA", "unit":"4m*10m", "state":"expanded"},
+			{"m_id":"B110",	"name":"coil2",	"quantity":"EA", "unit":"4m*10m", "state":"expanded"},
+			{"m_id":"B1200",	"name":"페인트1",	"quantity":"EA",	"unit":"10kg", "state":"collapsed"}
+		]
+	}
+	{
+		"name":"공정1 반제품",
+		"l_id":"B2",
+		"state" : "collapsed",
+		"sub":[
+			{"m_id":"B200",	"name":"공정1_부품1",	"quantity":"EA",	"unit":null, "state":"collapsed"},
+			{"m_id":"B220",	"name":"공정1_부품3",	"quantity":"EA",	"unit":null, "state":"expanded"}
+		]
+	}
+}
+
+collection 
+"transaction":[
+	{
+		"BOM_id":"B1@B100",
+		"inventory":1000,
+		"state":["collapsed","expanded"],
+		"input":[
+			{"date":ISODate("2016-07-23"), "quantity":1000},
+			{"date":ISODate("2016-07-20"), "quantity":2000},
+			{"date":ISODate("2016-07-08"), "quantity":2100}
+		],
+		"output":[
+			{"date":ISODate("2016-07-25"), "quantity":1000},
+			{"date":ISODate("2016-07-21"), "quantity":2000},
+			{"date":ISODate("2016-07-09"), "quantity":2100}
+		]
+	}
+	{
+		"BOM_id":"B1@B110",
+		"inventory":1000,
+		"state":["collapsed","collapsed"],
+		"input":[
+			{"date":ISODate("2016-07-23"), "quantity":1000},
+			{"date":ISODate("2016-07-23"), "quantity":1000},
+			{"date":ISODate("2016-07-23"), "quantity":1000},
+			{"date":ISODate("2016-07-20"), "quantity":2000},
+			{"date":ISODate("2016-07-08"), "quantity":2100}
+		],
+		"output":[
+			{"date":ISODate("2016-07-25"), "quantity":1000},
+			{"date":ISODate("2016-07-21"), "quantity":2000},
+			{"date":ISODate("2016-07-09"), "quantity":2100}
+		]
+	}
+	{
+		"BOM_id":"B1@B1200",
+		"inventory":1100,
+		"state":["expanded","collapsed"],
+		"input":[
+			{"date":ISODate("2016-07-23"), "quantity":1000},
+			{"date":ISODate("2016-07-20"), "quantity":2000},
+			{"date":ISODate("2016-07-08"), "quantity":2100}
+		],
+		"output":[
+			{"date":ISODate("2016-07-25"), "quantity":1000},
+			{"date":ISODate("2016-07-21"), "quantity":2000},
+			{"date":ISODate("2016-07-09"), "quantity":2100}
+		]
+	}
+	{
+		"BOM_id":"B2@B200",
+		"inventory":21000,
+		"state":["expanded","expanded"],
+		"input":[
+			{"date":ISODate("2016-07-23"), "quantity":1000},
+			{"date":ISODate("2016-07-20"), "quantity":2000},
+			{"date":ISODate("2016-07-08"), "quantity":2100}
+		],
+		"output":[
+			{"date":ISODate("2016-07-25"), "quantity":1000},
+			{"date":ISODate("2016-07-21"), "quantity":2000},
+			{"date":ISODate("2016-07-09"), "quantity":2100}
+		]
+	}
+	{
+		"BOM_id":"B2@B220",
+		"inventory":1880,
+		"state":["collapsed","expanded"],
+		"input":[
+			{"date":ISODate("2016-07-23"), "quantity":1000},
+			{"date":ISODate("2016-07-20"), "quantity":2000},
+			{"date":ISODate("2016-07-08"), "quantity":2100}
+		],
+		"output":[
+			{"date":ISODate("2016-07-25"), "quantity":1000},
+			{"date":ISODate("2016-07-21"), "quantity":2000},
+			{"date":ISODate("2016-07-09"), "quantity":2100}
+		]
+	}
+]
